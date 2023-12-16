@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ToDoList</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_user_name">Default User Name</string>
+    <string name="save_info">Save information</string>
+    <string name="change_info">Change information</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="your_image">your_image</string>
+</resources>
