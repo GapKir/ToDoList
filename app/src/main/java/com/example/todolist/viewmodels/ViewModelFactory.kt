@@ -9,8 +9,14 @@ class ViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(context) as T
-        } else throw IllegalArgumentException("Unknown ViewModel class")
+        return when{
+            modelClass.isAssignableFrom(MainScreenViewModel::class.java)-> {
+                MainScreenViewModel(context) as T
+            }
+
+            modelClass.isAssignableFrom(ProfileViewModel::class.java)-> {
+                ProfileViewModel(context) as T
+            } else -> throw IllegalArgumentException("Unknown ViewModel class")
+        }
     }
 }

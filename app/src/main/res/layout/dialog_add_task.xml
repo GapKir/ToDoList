@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <EditText
+        android:id="@+id/create_task_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:autofillHints="name"
+        android:hint="@string/required"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/create_task_description"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="16dp"
+        android:autofillHints="name"
+        android:hint="@string/optional"
+        android:inputType="textMultiLine" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/button_in_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/in_progress_title" />
+
+        <RadioButton
+            android:id="@+id/button_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done_title" />
+
+        <RadioButton
+            android:id="@+id/button_deleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/deleted_title" />
+
+    </RadioGroup>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/create_task_image"
+        app:shapeAppearance="@style/Circular"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/your_image"
+        android:visibility="gone"
+        tools:src="@drawable/ic_launcher_foreground" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_take_picture"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_height="wrap_content"
+            android:text="@string/take_picture"
+            android:textAllCaps="true"/>
+
+        <Button
+            android:id="@+id/button_open_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_gallery"
+            android:textAllCaps="true"/>
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

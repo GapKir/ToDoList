@@ -1,26 +1,30 @@
 package com.example.todolist.models
 
 object InProgressTasks {
-    private val inProgressTasks = listOf(
+    private val inProgressTasks = mutableListOf(
         Task(
-            11, "Create layout", "create layout"
+            1, "Create layout", "create layout", null
         ),
         Task(
-            12, "Create View", "create fragment"
+            2, "Create View", "create fragment", null
         ),
         Task(
-            13, "Create ViewModel ", "create fragment`s viewmode"
+            3, "Create ViewModel ", "create fragment`s viewmode", null
         ),
         Task(
-            14, "Create Model ", "create fragment`s model"
+            4, "Create Model ", "create fragment`s model", null
         ),
         Task(
-            15, "Create Tests ", "create app tests"
+            5, "Create Tests ", "create app tests", null
         ),
     )
 
     fun getTasks(): List<Task>{
         return inProgressTasks
+    }
+
+    fun addTask(task: Task){
+        inProgressTasks.add(task)
     }
 
 }

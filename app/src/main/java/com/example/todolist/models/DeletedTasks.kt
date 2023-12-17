@@ -1,26 +1,30 @@
 package com.example.todolist.models
 
 object DeletedTasks {
-    private val deletedTasks = listOf(
+    private val deletedTasks = mutableListOf(
         Task(
-            6, "Do Nothing", "do nothing"
+            1, "Do Nothing", "do nothing", null
         ),
         Task(
-            7, "Do Nothing", null
+            2, "Do Nothing", null, null
         ),
         Task(
-            8, "Do Nothing", null
+            3, "Do Nothing", null, null
         ),
         Task(
-            9, "Do Nothing", null
+            4, "Do Nothing", null, null
         ),
         Task(
-            10, "Do Nothing", null
+            5, "Do Nothing", null, null
         ),
     )
 
     fun getTasks(): List<Task>{
         return deletedTasks
+    }
+
+    fun addTask(task: Task){
+        deletedTasks.add(task)
     }
 
 }

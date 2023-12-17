@@ -1,5 +1,6 @@
 package com.example.todolist.screens
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,15 +12,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.adapters.TabPagerAdapter
 import com.example.todolist.adapters.TaskAdapter
 import com.example.todolist.databinding.FragmentInProgressBinding
-import com.example.todolist.viewmodels.BaseViewModel
+import com.example.todolist.viewmodels.MainScreenViewModel
+import com.example.todolist.viewmodels.ViewModelFactory
 
-class BaseFragment : Fragment() {
+typealias DialogListener = (type: String, title: String, desc: String?, uri: Uri?) -> Unit
+
+class MainScreen : Fragment() {
     private lateinit var binding: FragmentInProgressBinding
     private lateinit var adapter: TaskAdapter
 
     private val screenName: String by lazy { arguments?.getString(KEY_ARG) ?: TabPagerAdapter.IN_PROGRESS }
-    private val viewModel: BaseViewModel by lazy { ViewModelProvider(this)[BaseViewModel::class.java] }
-
+    private val viewModel: MainScreenViewModel by lazy {
+        ViewModelProvider(this, ViewModelFactory(requireContext()))[MainScreenViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,11 +35,19 @@ class BaseFragment : Fragment() {
         createAdapter()
         initViewModel()
 
+        binding.fab.setOnClickListener {
+            AddTaskDialog(listener).show(parentFragmentManager, null)
+        }
+
         return binding.root
     }
 
-    private fun initViewModel() {
+    override fun onResume() {
+        super.onResume()
         viewModel.getTasks(screenName)
+    }
+
+    private fun initViewModel() {
         viewModel.tasks.observe(viewLifecycleOwner){
             adapter.updateData(it)
         }
@@ -50,10 +63,14 @@ class BaseFragment : Fragment() {
         }
     }
 
+    private val listener: DialogListener = { type, title, desc, uri ->
+        viewModel.addTask(type =  type, title = title, desc = desc, uri = uri)
+    }
+
     companion object {
         @JvmStatic
         fun newInstance(param: String) =
-            BaseFragment().apply {
+            MainScreen().apply {
                 arguments = Bundle().apply {
                     putString(KEY_ARG, param)
 
@@ -62,4 +79,5 @@ class BaseFragment : Fragment() {
 
         private const val KEY_ARG = "KEY_ARG"
     }
+
 }

@@ -1,26 +1,52 @@
 package com.example.todolist.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
+import android.content.SharedPreferences
+import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.example.todolist.adapters.TabPagerAdapter
-import com.example.todolist.models.DeletedTasks
-import com.example.todolist.models.DoneTasks
-import com.example.todolist.models.InProgressTasks
-import com.example.todolist.models.Task
+import java.io.File
+import java.io.IOException
 
-class BaseViewModel() : ViewModel() {
+abstract class BaseViewModel(
+    protected val context: Context
+) : ViewModel() {
 
-    private val _tasks = MutableLiveData<List<Task>>()
-    val tasks: LiveData<List<Task>> = _tasks
+    protected val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
 
-
-    fun getTasks(screenName: String) {
-        _tasks.value = when (screenName) {
-            TabPagerAdapter.IN_PROGRESS -> InProgressTasks.getTasks()
-            TabPagerAdapter.DONE -> DoneTasks.getTasks()
-            else -> DeletedTasks.getTasks()
+    protected fun copyImageToInternalFile(imageUri: Uri, fileName: String) {
+        try {
+            val contentResolver = context.contentResolver
+            val file = File(context.filesDir, fileName)
+            contentResolver.openInputStream(imageUri)?.use { inputStream ->
+                contentResolver.openOutputStream(Uri.fromFile(file))?.use { outputStream ->
+                    val buffer = ByteArray(1024)
+                    while (inputStream.read(buffer) != -1) {
+                        outputStream.write(buffer)
+                    }
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
+    }
+    protected fun readImageFromInternalFile(fileName: String): Uri? {
+        return try {
+            val file = File(context.filesDir, fileName)
+            if (file.exists()) {
+                Uri.fromFile(file)
+            } else {
+                null
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
 
+    companion object {
+        const val FILE_PICTURE = "picture_photo.jpg"
+        const val FILE_USER = "user_image.jpg"
+        private const val SHARED_PREF = "shared_pref"
     }
 }

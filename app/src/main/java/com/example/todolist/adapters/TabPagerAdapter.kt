@@ -3,7 +3,7 @@ package com.example.todolist.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.todolist.screens.BaseFragment
+import com.example.todolist.screens.MainScreen
 
 class TabPagerAdapter(
     fragment: FragmentActivity
@@ -13,9 +13,9 @@ class TabPagerAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return when (position){
-            0 -> BaseFragment.newInstance(IN_PROGRESS)
-            1 -> BaseFragment.newInstance(DONE)
-            else -> BaseFragment.newInstance(DELETED)
+            0 -> MainScreen.newInstance(IN_PROGRESS)
+            1 -> MainScreen.newInstance(DONE)
+            else -> MainScreen.newInstance(DELETED)
         }
     }
 

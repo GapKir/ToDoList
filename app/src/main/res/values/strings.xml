@@ -7,4 +7,19 @@
     <string name="change_info">Change information</string>
     <string name="enter_your_name">Enter your name</string>
     <string name="your_image">your_image</string>
+    <string name="fab">FAB</string>
+    <string name="create_task_title">Create Task</string>
+    <string name="create_task_message">Please create your task and choose a photo</string>
+    <string name="required">Required</string>
+    <string name="optional">Optional</string>
+    <string name="in_progress_title">In Progress</string>
+    <string name="done_title">Done</string>
+    <string name="deleted_title">Deleted</string>
+    <string name="confirm">Confirm</string>
+    <string name="close">Close</string>
+    <string name="take_picture">Take Picture</string>
+    <string name="open_gallery">Open Gallery</string>
+    <string name="image_dir">images</string>
+    <string name="image_file">image.jpg</string>
+    <string name="authorities">com.example.todolist</string>
 </resources>
