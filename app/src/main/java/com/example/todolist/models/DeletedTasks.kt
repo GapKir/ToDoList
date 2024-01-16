@@ -1,7 +1,5 @@
 package com.example.todolist.models
 
-import io.reactivex.rxjava3.core.Single
-
 object DeletedTasks {
     private val deletedTasks = mutableListOf(
         Task(
@@ -21,8 +19,8 @@ object DeletedTasks {
         ),
     )
 
-    fun getTasks(): Single<List<Task>>{
-        return Single.just(deletedTasks)
+    fun getTasks():List<Task>{
+        return deletedTasks
     }
 
     fun addTask(task: Task){
