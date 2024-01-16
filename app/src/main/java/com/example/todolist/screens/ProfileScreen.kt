@@ -1,7 +1,6 @@
 package com.example.todolist.screens
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ class ProfileScreen : Fragment() {
         ViewModelProvider(this, ViewModelFactory(requireContext()))[ProfileViewModel::class.java]
     }
 
-
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { galleryUri ->
@@ -29,7 +27,6 @@ class ProfileScreen : Fragment() {
             viewModel.setUserPhoto(it)
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
