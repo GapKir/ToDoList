@@ -10,6 +10,7 @@ import com.example.todolist.screens.AddTaskDialog
 import com.example.todolist.screens.MainScreen
 import com.example.todolist.screens.ProfileScreen
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.runBlocking
 
 typealias DialogListener = (type: String, title: String, desc: String?, uri: Uri?) -> Unit
 
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
     }
+
     private fun initDrawerLayout() {
         with(binding) {
             appbar.setNavigationOnClickListener {

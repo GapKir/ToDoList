@@ -13,16 +13,14 @@ import com.example.todolist.adapters.TaskAdapter
 import com.example.todolist.databinding.FragmentInProgressBinding
 import com.example.todolist.viewmodels.MainScreenViewModel
 import com.example.todolist.viewmodels.ViewModelFactory
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 class MainScreen : Fragment() {
     private lateinit var binding: FragmentInProgressBinding
     private lateinit var adapter: TaskAdapter
-    private val disposableBag = CompositeDisposable()
 
     private val screenName: String by lazy { arguments?.getString(KEY_ARG) ?: TabPagerAdapter.IN_PROGRESS }
     private val viewModel: MainScreenViewModel by lazy {
-        ViewModelProvider(this, ViewModelFactory(requireContext(), disposableBag))[MainScreenViewModel::class.java]
+        ViewModelProvider(this, ViewModelFactory(requireContext()))[MainScreenViewModel::class.java]
     }
 
     val listener: DialogListener = { type, title, desc, uri ->
@@ -44,11 +42,6 @@ class MainScreen : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getTasks(screenName)
-    }
-
-    override fun onDestroy() {
-        disposableBag.clear()
-        super.onDestroy()
     }
 
     private fun initViewModel() {

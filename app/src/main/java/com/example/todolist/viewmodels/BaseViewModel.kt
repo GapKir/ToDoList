@@ -32,6 +32,7 @@ abstract class BaseViewModel(
         }
     }
     protected fun readImageFromInternalFile(fileName: String): Uri? {
+
         return try {
             val file = File(context.filesDir, fileName)
             if (file.exists()) {
