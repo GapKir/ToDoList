@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.todolist.R
+import com.example.todolist.base_abstracts.BaseViewModel
+import kotlinx.coroutines.launch
 
 
 class ProfileViewModel(
@@ -24,8 +26,10 @@ class ProfileViewModel(
 
     init {
         loadFromSharedPref()
-        super.readImageFromInternalFile(FILE_USER)?.let {
-            _userPhoto.value = it
+        viewModelScope.launch {
+            super.readImageFromInternalFile(FILE_USER)?.let {
+                _userPhoto.postValue(it)
+            }
         }
     }
 
@@ -41,7 +45,9 @@ class ProfileViewModel(
 
     fun setUserPhoto(userPhoto: Uri) {
         _userPhoto.value = userPhoto
-        super.copyImageToInternalFile(userPhoto, FILE_USER)
+        viewModelScope.launch {
+            super.copyImageToInternalFile(userPhoto, FILE_USER)
+        }
     }
 
     private fun loadFromSharedPref() {

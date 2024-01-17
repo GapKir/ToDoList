@@ -1,74 +1,55 @@
 package com.example.todolist.screens
 
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.todolist.DialogListener
-import com.example.todolist.adapters.TabPagerAdapter
 import com.example.todolist.adapters.TaskAdapter
+import com.example.todolist.base_abstracts.BaseScreen
+import com.example.todolist.base_abstracts.DialogListener
 import com.example.todolist.databinding.FragmentInProgressBinding
 import com.example.todolist.viewmodels.MainScreenViewModel
-import com.example.todolist.viewmodels.ViewModelFactory
 
-class MainScreen : Fragment() {
+class MainScreen : BaseScreen<MainScreenViewModel>(MainScreenViewModel::class.java),
+    DialogListener {
     private lateinit var binding: FragmentInProgressBinding
     private lateinit var adapter: TaskAdapter
-
-    private val screenName: String by lazy { arguments?.getString(KEY_ARG) ?: TabPagerAdapter.IN_PROGRESS }
-    private val viewModel: MainScreenViewModel by lazy {
-        ViewModelProvider(this, ViewModelFactory(requireContext()))[MainScreenViewModel::class.java]
-    }
-
-    val listener: DialogListener = { type, title, desc, uri ->
-        viewModel.addTask(type =  type, title = title, desc = desc, uri = uri)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentInProgressBinding.inflate(layoutInflater, container, false)
-
         createAdapter()
         initViewModel()
-
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getTasks(screenName)
+        viewModel.getTasks(super.currentScreenName)
+    }
+
+    override fun dialogListener(type: SCREENS, title: String, desc: String?, uri: Uri?) {
+        super.viewModel.addTask(type =  type, title = title, desc = desc, uri = uri)
     }
 
     private fun initViewModel() {
-        viewModel.tasks.observe(viewLifecycleOwner){
+        super.viewModel.tasks.observe(viewLifecycleOwner){
             adapter.updateData(it)
         }
     }
 
     private fun createAdapter() {
         adapter = TaskAdapter(emptyList())
-
         val layoutManager = LinearLayoutManager(requireContext())
+
         binding.apply {
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = adapter
         }
-    }
-
-    companion object {
-        fun newInstance(param: String) =
-            MainScreen().apply {
-                arguments = Bundle().apply {
-                    putString(KEY_ARG, param)
-                }
-            }
-
-        private const val KEY_ARG = "KEY_ARG"
     }
 
 }

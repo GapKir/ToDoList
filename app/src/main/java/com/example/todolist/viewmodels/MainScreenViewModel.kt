@@ -2,16 +2,17 @@ package com.example.todolist.viewmodels
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.todolist.adapters.TabPagerAdapter
 import com.example.todolist.models.DeletedTasks
 import com.example.todolist.models.DoneTasks
 import com.example.todolist.models.InProgressTasks
 import com.example.todolist.models.Task
+import com.example.todolist.base_abstracts.BaseScreen
+import com.example.todolist.base_abstracts.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MainScreenViewModel(
@@ -21,42 +22,41 @@ class MainScreenViewModel(
     private val _tasks = MutableLiveData<List<Task>>()
     val tasks: LiveData<List<Task>> = _tasks
 
-    fun getTasks(screenName: String) {
-        viewModelScope.launch(Dispatchers.Default) {
-            Log.d("TAG", "${Thread.currentThread().name}")
+    fun getTasks(screenName: BaseScreen.SCREENS) {
+        viewModelScope.launch(Dispatchers.IO) {
             _tasks.postValue(getTasksByType(screenName))
         }
     }
 
-    suspend fun addTask(type: String, title: String, desc: String?, uri: Uri? = null) {
-        val tasks = getTasksByType(type)
-        val taskListId = (tasks.size + 1).toLong()
-        val task = Task(
-            taskListId,
-            title,
-            desc,
-            uri
-        )
-        addTaskByType(type, task)
+    fun addTask(type: BaseScreen.SCREENS, title: String, desc: String?, uri: Uri? = null) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val tasks = getTasksByType(type)
+            val taskListId = (tasks.size + 1).toLong()
+            val task = Task(
+                taskListId,
+                title,
+                desc,
+                uri
+            )
+            addTaskByType(type, task)
+        }
     }
 
-    private fun getTasksByType(type: String): List<Task> {
-        var tasks = emptyList<Task>()
-        viewModelScope.launch {
-            tasks = when (type) {
-                TabPagerAdapter.IN_PROGRESS -> InProgressTasks.getTasks()
-                TabPagerAdapter.DONE -> DoneTasks.getTasks()
+    private suspend fun getTasksByType(type: BaseScreen.SCREENS): List<Task> {
+        return viewModelScope.async(Dispatchers.IO) {
+            when (type) {
+                BaseScreen.SCREENS.IN_PROGRESS -> InProgressTasks.getTasks()
+                BaseScreen.SCREENS.DONE -> DoneTasks.getTasks()
                 else -> DeletedTasks.getTasks()
             }
-        }
-        return tasks
+        }.await()
     }
 
-    private fun addTaskByType(type: String, task: Task) {
-        viewModelScope.launch {
+    private fun addTaskByType(type: BaseScreen.SCREENS, task: Task) {
+        viewModelScope.launch(Dispatchers.IO) {
             when (type) {
-                TabPagerAdapter.IN_PROGRESS -> InProgressTasks.addTask(task)
-                TabPagerAdapter.DONE -> DoneTasks.addTask(task)
+                BaseScreen.SCREENS.IN_PROGRESS -> InProgressTasks.addTask(task)
+                BaseScreen.SCREENS.DONE -> DoneTasks.addTask(task)
                 else -> DeletedTasks.addTask(task)
             }
         }

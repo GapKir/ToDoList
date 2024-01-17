@@ -1,18 +1,15 @@
 package com.example.todolist
 
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.todolist.adapters.TabPagerAdapter
 import com.example.todolist.databinding.ActivityMainBinding
-import com.example.todolist.screens.AddTaskDialog
-import com.example.todolist.screens.MainScreen
+import com.example.todolist.base_abstracts.BaseScreen
+import com.example.todolist.base_abstracts.DialogListener
 import com.example.todolist.screens.ProfileScreen
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.runBlocking
 
-typealias DialogListener = (type: String, title: String, desc: String?, uri: Uri?) -> Unit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -27,12 +24,8 @@ class MainActivity : AppCompatActivity() {
         initDrawerLayout()
 
         binding.fab.setOnClickListener {
-            createDialog()
+            fabClick()
         }
-    }
-
-    private fun createDialog() {
-        AddTaskDialog(listener).show(supportFragmentManager, null)
     }
 
     private fun initAdapter() {
@@ -41,9 +34,9 @@ class MainActivity : AppCompatActivity() {
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> TabPagerAdapter.IN_PROGRESS
-                1 -> TabPagerAdapter.DONE
-                else -> TabPagerAdapter.DELETED
+                0 -> BaseScreen.SCREENS.IN_PROGRESS.name
+                1 -> BaseScreen.SCREENS.DONE.name
+                else -> BaseScreen.SCREENS.DELETED.name
             }
         }.attach()
     }
@@ -53,15 +46,15 @@ class MainActivity : AppCompatActivity() {
             appbar.setNavigationOnClickListener {
                 drawer.openDrawer(GravityCompat.START)
                 supportFragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, ProfileScreen())
+                    .add(R.id.frame_layout, BaseScreen.createInstance<ProfileScreen>())
                     .commit()
             }
         }
     }
 
-    private val listener: DialogListener = { type, title, desc, uri ->
+    private fun fabClick() {
         val currentFragment = supportFragmentManager
-            .findFragmentByTag("f" + adapter.getItemId(binding.viewPager.currentItem)) as? MainScreen
-        currentFragment?.let { it.listener(type, title, desc, uri) }
+            .findFragmentByTag("f" + adapter.getItemId(binding.viewPager.currentItem)) as? DialogListener
+        currentFragment?.let { it.fabClick() }
     }
 }

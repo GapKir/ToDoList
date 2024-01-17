@@ -12,11 +12,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
-import com.example.todolist.DialogListener
 import com.example.todolist.R
-import com.example.todolist.adapters.TabPagerAdapter
+import com.example.todolist.base_abstracts.BaseScreen
+import com.example.todolist.base_abstracts.DialogListener
 import com.example.todolist.databinding.DialogAddTaskBinding
-import com.example.todolist.viewmodels.BaseViewModel
+import com.example.todolist.base_abstracts.BaseViewModel
 import java.io.File
 import java.io.IOException
 
@@ -69,7 +69,7 @@ class AddTaskDialog(
 
         initListenersOnView()
 
-        return AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setCancelable(true)
             .setTitle(R.string.create_task_title)
             .setMessage(R.string.create_task_message)
@@ -77,18 +77,22 @@ class AddTaskDialog(
             .setPositiveButton(R.string.confirm) { _, _ -> setPositiveButton() }
             .setView(dialogBinding.root)
             .create()
+        dialog.setCanceledOnTouchOutside(false)
+
+        return dialog
+
     }
 
     private fun setPositiveButton() {
         val taskTitle = dialogBinding.createTaskTitle.text.toString()
         val taskDescription = dialogBinding.createTaskDescription.text.toString()
         val taskType = when (dialogBinding.radioGroup.checkedRadioButtonId) {
-            R.id.button_in_progress -> TabPagerAdapter.IN_PROGRESS
-            R.id.button_done -> TabPagerAdapter.DONE
-            else -> TabPagerAdapter.DELETED
+            R.id.button_in_progress -> BaseScreen.SCREENS.IN_PROGRESS
+            R.id.button_done -> BaseScreen.SCREENS.DONE
+            else -> BaseScreen.SCREENS.DELETED
         }
         if (dialogBinding.createTaskTitle.text.isNotBlank()) {
-            listener(taskType, taskTitle, taskDescription, fileUri)
+            listener.dialogListener(taskType, taskTitle, taskDescription, fileUri)
         }
         dismiss()
     }
@@ -108,6 +112,7 @@ class AddTaskDialog(
             hideKeyboard(it)
         }
     }
+
 
     private fun hideKeyboard(view: View) {
         val imm =
