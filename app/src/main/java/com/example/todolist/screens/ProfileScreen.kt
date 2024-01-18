@@ -13,6 +13,7 @@ import com.example.todolist.viewmodels.ProfileViewModel
 
 class ProfileScreen: BaseScreen<ProfileViewModel>(ProfileViewModel::class.java) {
     private lateinit var binding: ProfilePageBinding
+    private var isEditMode = false
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -38,7 +39,7 @@ class ProfileScreen: BaseScreen<ProfileViewModel>(ProfileViewModel::class.java) 
     private fun initViewModel() {
         viewModel.isEditMode.observe(viewLifecycleOwner) { isEditMode ->
             updateUI(isEditMode)
-            initListeners(isEditMode)
+            updateListeners(isEditMode)
         }
 
         viewModel.userName.observe(viewLifecycleOwner) { userName ->
@@ -51,7 +52,7 @@ class ProfileScreen: BaseScreen<ProfileViewModel>(ProfileViewModel::class.java) 
     }
 
 
-    private fun initListeners(isEditMode: Boolean) {
+    private fun updateListeners(isEditMode: Boolean) {
         with(binding) {
             if (isEditMode) {
                 profilePhoto.setOnClickListener {

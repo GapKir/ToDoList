@@ -1,6 +1,8 @@
 package com.example.todolist.models
 
-object DeletedTasks {
+import android.util.Log
+
+object DeletedTasks: Repository {
     private val deletedTasks = mutableListOf(
         Task(
             1, "Do Nothing", "do nothing", null
@@ -19,11 +21,13 @@ object DeletedTasks {
         ),
     )
 
-    fun getTasks():List<Task>{
+    override fun getTasks():List<Task>{
+        Log.d("MYTAG", "GET TASKS" + Thread.currentThread().name)
         return deletedTasks
     }
 
-    fun addTask(task: Task){
+    override fun addTask(task: Task){
+        Log.d("MYTAG", "ADD TASKS" + Thread.currentThread().name)
         deletedTasks.add(task)
     }
 

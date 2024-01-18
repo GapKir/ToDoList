@@ -12,11 +12,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.example.todolist.R
 import com.example.todolist.base_abstracts.BaseScreen
 import com.example.todolist.base_abstracts.DialogListener
 import com.example.todolist.databinding.DialogAddTaskBinding
 import com.example.todolist.base_abstracts.BaseViewModel
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 
@@ -31,7 +33,9 @@ class AddTaskDialog(
         ActivityResultContracts.GetContent()
     ) { imageGalleryUri ->
         imageGalleryUri?.let {
-            copyImageToPath(it, fileUri!!)
+            lifecycleScope.launch {
+                copyImageToPath(it, fileUri!!)
+            }
 
             with(dialogBinding.createTaskImage) {
                 visibility = View.VISIBLE
@@ -59,7 +63,9 @@ class AddTaskDialog(
                 .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 
             if (imageUriGallery != null && currentImageUri != null) {
-                copyImageToPath(currentImageUri, imageUriGallery)
+                lifecycleScope.launch {
+                    copyImageToPath(currentImageUri, imageUriGallery)
+                }
             }
         }
 
@@ -122,15 +128,15 @@ class AddTaskDialog(
 
     private fun copyImageToPath(imageUri: Uri, copyToPath: Uri) {
         try {
-            val contentResolver = requireContext().contentResolver
-            contentResolver.openInputStream(imageUri)?.use { inputStream ->
-                contentResolver.openOutputStream(copyToPath)?.use { outputStream ->
-                    val buffer = ByteArray(1024)
-                    while (inputStream.read(buffer) != -1) {
-                        outputStream.write(buffer)
+                val contentResolver = requireContext().contentResolver
+                contentResolver.openInputStream(imageUri)?.use { inputStream ->
+                    contentResolver.openOutputStream(copyToPath)?.use { outputStream ->
+                        val buffer = ByteArray(1024)
+                        while (inputStream.read(buffer) != -1) {
+                            outputStream.write(buffer)
+                        }
                     }
                 }
-            }
         } catch (e: IOException) {
             e.printStackTrace()
         }

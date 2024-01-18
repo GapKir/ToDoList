@@ -12,7 +12,6 @@ import com.example.todolist.models.Task
 import com.example.todolist.base_abstracts.BaseScreen
 import com.example.todolist.base_abstracts.BaseViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MainScreenViewModel(
@@ -32,33 +31,25 @@ class MainScreenViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val tasks = getTasksByType(type)
             val taskListId = (tasks.size + 1).toLong()
-            val task = Task(
-                taskListId,
-                title,
-                desc,
-                uri
-            )
+            val task = Task(taskListId, title, desc, uri)
+
             addTaskByType(type, task)
         }
     }
 
-    private suspend fun getTasksByType(type: BaseScreen.SCREENS): List<Task> {
-        return viewModelScope.async(Dispatchers.IO) {
-            when (type) {
+    private fun getTasksByType(type: BaseScreen.SCREENS): List<Task> {
+        return when (type) {
                 BaseScreen.SCREENS.IN_PROGRESS -> InProgressTasks.getTasks()
                 BaseScreen.SCREENS.DONE -> DoneTasks.getTasks()
                 else -> DeletedTasks.getTasks()
             }
-        }.await()
-    }
+        }
 
     private fun addTaskByType(type: BaseScreen.SCREENS, task: Task) {
-        viewModelScope.launch(Dispatchers.IO) {
             when (type) {
                 BaseScreen.SCREENS.IN_PROGRESS -> InProgressTasks.addTask(task)
                 BaseScreen.SCREENS.DONE -> DoneTasks.addTask(task)
                 else -> DeletedTasks.addTask(task)
             }
-        }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.todolist.models
 
-object DoneTasks {
+import android.util.Log
+
+object DoneTasks: Repository {
     private val doneTasks = mutableListOf(
         Task(
             1, "Create Manifest", "create manifest file", null
@@ -19,11 +21,13 @@ object DoneTasks {
         ),
     )
 
-    fun getTasks(): List<Task> {
+    override fun getTasks(): List<Task> {
+        Log.d("MYTAG", "GET TASKS" + Thread.currentThread().name)
         return doneTasks
     }
 
-    fun addTask(task: Task){
+    override fun addTask(task: Task){
+        Log.d("MYTAG", "ADD TASKS" + Thread.currentThread().name)
         doneTasks.add(task)
     }
 
