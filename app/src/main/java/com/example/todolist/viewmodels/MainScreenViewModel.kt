@@ -13,6 +13,7 @@ import com.example.todolist.base_abstracts.BaseScreen
 import com.example.todolist.base_abstracts.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainScreenViewModel(
     context: Context,
@@ -22,13 +23,13 @@ class MainScreenViewModel(
     val tasks: LiveData<List<Task>> = _tasks
 
     fun getTasks(screenName: BaseScreen.SCREENS) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             _tasks.postValue(getTasksByType(screenName))
         }
     }
 
     fun addTask(type: BaseScreen.SCREENS, title: String, desc: String?, uri: Uri? = null) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val tasks = getTasksByType(type)
             val taskListId = (tasks.size + 1).toLong()
             val task = Task(taskListId, title, desc, uri)
@@ -37,19 +38,21 @@ class MainScreenViewModel(
         }
     }
 
-    private fun getTasksByType(type: BaseScreen.SCREENS): List<Task> {
-        return when (type) {
+    private suspend fun getTasksByType(type: BaseScreen.SCREENS): List<Task> =
+        withContext(Dispatchers.IO) {
+            when (type) {
                 BaseScreen.SCREENS.IN_PROGRESS -> InProgressTasks.getTasks()
                 BaseScreen.SCREENS.DONE -> DoneTasks.getTasks()
                 else -> DeletedTasks.getTasks()
             }
         }
 
-    private fun addTaskByType(type: BaseScreen.SCREENS, task: Task) {
-            when (type) {
-                BaseScreen.SCREENS.IN_PROGRESS -> InProgressTasks.addTask(task)
-                BaseScreen.SCREENS.DONE -> DoneTasks.addTask(task)
-                else -> DeletedTasks.addTask(task)
-            }
+    private suspend fun addTaskByType(type: BaseScreen.SCREENS, task: Task) =
+        withContext(Dispatchers.IO) {
+        when (type) {
+            BaseScreen.SCREENS.IN_PROGRESS -> InProgressTasks.addTask(task)
+            BaseScreen.SCREENS.DONE -> DoneTasks.addTask(task)
+            else -> DeletedTasks.addTask(task)
+        }
     }
 }
