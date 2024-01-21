@@ -1,6 +1,8 @@
 package com.example.todolist.models
 
-import android.util.Log
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 object DoneTasks: Repository {
     private val doneTasks = mutableListOf(
@@ -21,13 +23,19 @@ object DoneTasks: Repository {
         ),
     )
 
-    override fun getTasks(): List<Task> {
-        Log.d("MYTAG", "GET TASKS" + Thread.currentThread().name)
-        return doneTasks
+    override suspend fun getTasks(): Flow<Task> = flow {
+        for (task in doneTasks){
+            delay(300)
+            emit(task)
+        }
     }
 
-    override fun addTask(task: Task){
-        Log.d("MYTAG", "ADD TASKS" + Thread.currentThread().name)
+    override suspend fun getLatestTaskId(): Flow<Long> = flow {
+        delay(200)
+        emit(doneTasks.size.toLong() + 1)
+    }
+    override suspend fun addTask(task: Task){
+        delay(500)
         doneTasks.add(task)
     }
 

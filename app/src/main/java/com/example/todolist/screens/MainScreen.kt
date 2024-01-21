@@ -33,12 +33,22 @@ class MainScreen : BaseScreen<MainScreenViewModel>(MainScreenViewModel::class.ja
     }
 
     override fun dialogListener(type: SCREENS, title: String, desc: String?, uri: Uri?) {
-        super.viewModel.addTask(type =  type, title = title, desc = desc, uri = uri)
+        super.viewModel.addTask(type =  type, title = title, desc = desc, uri = uri, super.currentScreenName)
     }
 
     private fun initViewModel() {
         super.viewModel.tasks.observe(viewLifecycleOwner){
             adapter.updateData(it)
+        }
+
+        super.viewModel.shouldShowProgress.observe(viewLifecycleOwner){showProgress->
+            if (showProgress){
+                binding.progressBar.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.INVISIBLE
+            } else {
+                binding.progressBar.visibility = View.INVISIBLE
+                binding.recyclerView.visibility = View.VISIBLE
+            }
         }
     }
 

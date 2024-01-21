@@ -1,6 +1,9 @@
 package com.example.todolist.models
 
+import kotlinx.coroutines.flow.Flow
+
 interface Repository {
-    fun getTasks(): List<Task>
-    fun addTask(task: Task)
+    suspend fun getTasks(): Flow<Task>
+   suspend fun getLatestTaskId(): Flow<Long>
+    suspend fun addTask(task: Task)
 }
