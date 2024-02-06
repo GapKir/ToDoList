@@ -1,6 +1,5 @@
 package com.example.todolist.database
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.todolist.base_abstracts.TaskCategories
@@ -12,5 +11,5 @@ data class TaskEntity(
     var category: TaskCategories,
     var title: String,
     var description: String?,
-    var photo: Uri?
+    var photo: String?
 )

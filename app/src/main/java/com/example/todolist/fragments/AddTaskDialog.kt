@@ -98,7 +98,7 @@ class AddTaskDialog(
             else -> TaskCategories.DELETED
         }
         if (dialogBinding.createTaskTitle.text.isNotBlank()) {
-            listener.dialogListener(taskType, taskTitle, taskDescription, fileUri)
+            listener.dialogListener(taskType, taskTitle, taskDescription, fileUri.toString())
         }
         dismiss()
     }

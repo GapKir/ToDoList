@@ -3,14 +3,14 @@ package com.example.todolist.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todolist.database.TaskEntity
 import com.example.todolist.databinding.ItemTaskBinding
-import com.example.todolist.models.Task
 
 class TaskAdapter(
-    private var tasks: List<Task>
+    private var tasks: List<TaskEntity>
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    fun updateData(newTasksList: List<Task>){
+    fun updateData(newTasksList: List<TaskEntity>){
         tasks = newTasksList
         notifyDataSetChanged()
     }
@@ -34,7 +34,7 @@ class TaskAdapter(
         private val binding: ItemTaskBinding
     ): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(task: Task){
+        fun bind(task: TaskEntity){
             with(binding) {
                 taskId.text = task.id.toString()
                 taskTitle.text = task.title

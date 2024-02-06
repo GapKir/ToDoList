@@ -4,6 +4,6 @@ import android.net.Uri
 
 interface DialogListener {
     fun fabClick()
-    fun dialogListener(type: TaskCategories, title: String, desc: String?, uri: Uri?)
+    fun dialogListener(type: TaskCategories, title: String, desc: String?, uri: String?)
 }
 

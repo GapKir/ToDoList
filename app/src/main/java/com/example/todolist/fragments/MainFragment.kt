@@ -1,6 +1,5 @@
 package com.example.todolist.fragments
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,12 +27,12 @@ class MainFragment : BaseFragment<MainScreenViewModel>(MainScreenViewModel::clas
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
         viewModel.getTasks(super.currentScreenName)
     }
 
-    override fun dialogListener(type: TaskCategories, title: String, desc: String?, uri: Uri?) {
+    override fun dialogListener(type: TaskCategories, title: String, desc: String?, uri: String?) {
         super.viewModel.addTask(type = type, title = title, desc = desc, uri = uri, super.currentScreenName)
     }
 

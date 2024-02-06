@@ -10,23 +10,25 @@ import com.example.todolist.fragments.AddTaskDialog
 import com.example.todolist.models.DataBaseRepository
 import com.example.todolist.viewmodels.ViewModelFactory
 
-abstract class BaseFragment<VM : ViewModel>(viewModelClass: Class<VM>) : Fragment(), DialogListener {
+abstract class BaseFragment<VM : ViewModel>(viewModelClass: Class<VM>) : Fragment(),
+    DialogListener {
 
-    private val application = (requireContext().applicationContext) as App
-    private val repository = DataBaseRepository(application.taskDatabase.tasksDao())
+    private val application: App by lazy { (requireContext().applicationContext) as App }
+    private val repository: DataBaseRepository by lazy { DataBaseRepository(application.taskDatabase.tasksDao()) }
 
     protected val viewModel: VM by lazy {
         ViewModelProvider(this, ViewModelFactory(requireContext(), repository))[viewModelClass]
     }
     protected val currentScreenName: TaskCategories by lazy {
-        arguments?.getString(KEY_ARG)?.let { TaskCategories.valueOf(it) } ?: TaskCategories.IN_PROGRESS
+        arguments?.getString(KEY_ARG)?.let { TaskCategories.valueOf(it) }
+            ?: TaskCategories.IN_PROGRESS
     }
 
     override fun fabClick() {
         AddTaskDialog(this).show(parentFragmentManager, null)
     }
 
-    override fun dialogListener(type: TaskCategories, title: String, desc: String?, uri: Uri?) {
+    override fun dialogListener(type: TaskCategories, title: String, desc: String?, uri: String?) {
     }
 
 
