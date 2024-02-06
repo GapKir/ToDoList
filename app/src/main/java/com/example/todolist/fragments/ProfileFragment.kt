@@ -1,4 +1,4 @@
-package com.example.todolist.screens
+package com.example.todolist.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.todolist.R
-import com.example.todolist.base_abstracts.BaseScreen
+import com.example.todolist.base_abstracts.BaseFragment
 import com.example.todolist.databinding.ProfilePageBinding
 import com.example.todolist.viewmodels.ProfileViewModel
 
 
-class ProfileScreen: BaseScreen<ProfileViewModel>(ProfileViewModel::class.java) {
+class ProfileFragment: BaseFragment<ProfileViewModel>(ProfileViewModel::class.java) {
     private lateinit var binding: ProfilePageBinding
-    private var isEditMode = false
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -30,9 +29,7 @@ class ProfileScreen: BaseScreen<ProfileViewModel>(ProfileViewModel::class.java) 
         savedInstanceState: Bundle?
     ): View {
         binding = ProfilePageBinding.inflate(inflater, container, false)
-
         initViewModel()
-
         return binding.root
     }
 

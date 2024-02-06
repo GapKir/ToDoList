@@ -1,4 +1,4 @@
-package com.example.todolist.screens
+package com.example.todolist.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -14,10 +14,10 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.example.todolist.R
-import com.example.todolist.base_abstracts.BaseScreen
 import com.example.todolist.base_abstracts.DialogListener
 import com.example.todolist.databinding.DialogAddTaskBinding
 import com.example.todolist.base_abstracts.BaseViewModel
+import com.example.todolist.base_abstracts.TaskCategories
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
@@ -93,9 +93,9 @@ class AddTaskDialog(
         val taskTitle = dialogBinding.createTaskTitle.text.toString()
         val taskDescription = dialogBinding.createTaskDescription.text.toString()
         val taskType = when (dialogBinding.radioGroup.checkedRadioButtonId) {
-            R.id.button_in_progress -> BaseScreen.SCREENS.IN_PROGRESS
-            R.id.button_done -> BaseScreen.SCREENS.DONE
-            else -> BaseScreen.SCREENS.DELETED
+            R.id.button_in_progress -> TaskCategories.IN_PROGRESS
+            R.id.button_done -> TaskCategories.DONE
+            else -> TaskCategories.DELETED
         }
         if (dialogBinding.createTaskTitle.text.isNotBlank()) {
             listener.dialogListener(taskType, taskTitle, taskDescription, fileUri)

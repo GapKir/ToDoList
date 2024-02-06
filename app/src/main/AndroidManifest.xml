@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -23,14 +24,14 @@
         </activity>
 
         <provider
-            android:authorities="@string/authorities"
             android:name="androidx.core.content.FileProvider"
+            android:authorities="@string/authorities"
             android:exported="false"
             android:grantUriPermissions="true">
 
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"/>
+                android:resource="@xml/file_path" />
         </provider>
     </application>
 

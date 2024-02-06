@@ -1,4 +1,4 @@
-package com.example.todolist.screens
+package com.example.todolist.fragments
 
 import android.net.Uri
 import android.os.Bundle
@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.adapters.TaskAdapter
-import com.example.todolist.base_abstracts.BaseScreen
+import com.example.todolist.base_abstracts.BaseFragment
 import com.example.todolist.base_abstracts.DialogListener
+import com.example.todolist.base_abstracts.TaskCategories
 import com.example.todolist.databinding.FragmentInProgressBinding
 import com.example.todolist.viewmodels.MainScreenViewModel
 
-class MainScreen : BaseScreen<MainScreenViewModel>(MainScreenViewModel::class.java),
+class MainFragment : BaseFragment<MainScreenViewModel>(MainScreenViewModel::class.java),
     DialogListener {
     private lateinit var binding: FragmentInProgressBinding
     private lateinit var adapter: TaskAdapter
@@ -32,8 +33,8 @@ class MainScreen : BaseScreen<MainScreenViewModel>(MainScreenViewModel::class.ja
         viewModel.getTasks(super.currentScreenName)
     }
 
-    override fun dialogListener(type: SCREENS, title: String, desc: String?, uri: Uri?) {
-        super.viewModel.addTask(type =  type, title = title, desc = desc, uri = uri, super.currentScreenName)
+    override fun dialogListener(type: TaskCategories, title: String, desc: String?, uri: Uri?) {
+        super.viewModel.addTask(type = type, title = title, desc = desc, uri = uri, super.currentScreenName)
     }
 
     private fun initViewModel() {

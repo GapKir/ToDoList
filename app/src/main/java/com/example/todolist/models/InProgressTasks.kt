@@ -23,7 +23,7 @@ object InProgressTasks: Repository{
         ),
     )
 
-    override suspend fun getTasks(): Flow<Task> = flow {
+    override suspend fun getTasksByCategory(): Flow<Task> = flow {
         for (task in inProgressTasks){
             delay(300)
             emit(task)
