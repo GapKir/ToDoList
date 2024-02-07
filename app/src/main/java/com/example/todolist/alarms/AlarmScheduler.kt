@@ -13,7 +13,7 @@ class AlarmScheduler(
 
     fun schedule(title: String, desc: String, time: Long) {
         try {
-            alarmManager.setExact(
+            alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 time,
                 createIntent(title, desc)
