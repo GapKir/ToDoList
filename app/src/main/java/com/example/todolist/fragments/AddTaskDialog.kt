@@ -14,6 +14,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.example.todolist.R
+import com.example.todolist.alarms.AlarmScheduler
 import com.example.todolist.base_abstracts.DialogListener
 import com.example.todolist.databinding.DialogAddTaskBinding
 import com.example.todolist.base_abstracts.BaseViewModel
@@ -28,6 +29,7 @@ class AddTaskDialog(
 
     private lateinit var dialogBinding: DialogAddTaskBinding
     private var fileUri: Uri? = null
+    private var pickedTime: Long? = null
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -97,8 +99,11 @@ class AddTaskDialog(
             R.id.button_done -> TaskCategories.DONE
             else -> TaskCategories.DELETED
         }
+
         if (dialogBinding.createTaskTitle.text.isNotBlank()) {
             listener.dialogListener(taskType, taskTitle, taskDescription, fileUri.toString())
+
+            createScheduleAlarm(taskTitle, taskDescription)
         }
         dismiss()
     }
@@ -114,11 +119,22 @@ class AddTaskDialog(
             takePictureLauncher.launch(fileUri)
         }
 
+        dialogBinding.buttonPickTime.setOnClickListener {
+            (TimePickDialog(requireContext()) { pickedTime = it }).show()
+        }
+
         dialogBinding.root.setOnClickListener {
             hideKeyboard(it)
         }
     }
 
+    private fun createScheduleAlarm(title: String, desc: String) {
+        pickedTime?.let {time->
+            AlarmScheduler(requireContext()).schedule(
+                title, desc, time
+            )
+        }
+    }
 
     private fun hideKeyboard(view: View) {
         val imm =
@@ -128,15 +144,15 @@ class AddTaskDialog(
 
     private fun copyImageToPath(imageUri: Uri, copyToPath: Uri) {
         try {
-                val contentResolver = requireContext().contentResolver
-                contentResolver.openInputStream(imageUri)?.use { inputStream ->
-                    contentResolver.openOutputStream(copyToPath)?.use { outputStream ->
-                        val buffer = ByteArray(1024)
-                        while (inputStream.read(buffer) != -1) {
-                            outputStream.write(buffer)
-                        }
+            val contentResolver = requireContext().contentResolver
+            contentResolver.openInputStream(imageUri)?.use { inputStream ->
+                contentResolver.openOutputStream(copyToPath)?.use { outputStream ->
+                    val buffer = ByteArray(1024)
+                    while (inputStream.read(buffer) != -1) {
+                        outputStream.write(buffer)
                     }
                 }
+            }
         } catch (e: IOException) {
             e.printStackTrace()
         }

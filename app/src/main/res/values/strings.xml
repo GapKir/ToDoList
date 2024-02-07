@@ -22,4 +22,5 @@
     <string name="image_dir">images</string>
     <string name="image_file">image.jpg</string>
     <string name="authorities">com.example.todolist</string>
+    <string name="schedule_task">Schedule task</string>
 </resources>
