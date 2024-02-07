@@ -2,6 +2,7 @@ package com.example.todolist.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.database.TaskEntity
 import com.example.todolist.databinding.ItemTaskBinding
@@ -11,8 +12,10 @@ class TaskAdapter(
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     fun updateData(newTasksList: List<TaskEntity>){
+        val diffCallback = TaskDiffCallback(tasks, newTasksList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         tasks = newTasksList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
 
