@@ -25,8 +25,8 @@ class AlarmScheduler(
 
     private fun createIntent(title: String, desc: String): PendingIntent {
         val intent = Intent(context, AlarmReceiver::class.java).apply {
-            this.putExtra(KEY_TITLE, title)
-            this.putExtra(KEY_DESC, desc)
+            putExtra(KEY_TITLE, title)
+            putExtra(KEY_DESC, desc)
         }
         return PendingIntent.getBroadcast(
             context,
