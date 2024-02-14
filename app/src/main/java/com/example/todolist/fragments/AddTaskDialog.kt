@@ -19,10 +19,12 @@ import com.example.todolist.base_abstracts.DialogListener
 import com.example.todolist.databinding.DialogAddTaskBinding
 import com.example.todolist.base_abstracts.BaseViewModel
 import com.example.todolist.base_abstracts.TaskCategories
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 
+@AndroidEntryPoint
 class AddTaskDialog(
     private val listener: DialogListener
 ) : DialogFragment() {

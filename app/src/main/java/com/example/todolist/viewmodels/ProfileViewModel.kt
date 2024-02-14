@@ -7,12 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.todolist.R
 import com.example.todolist.base_abstracts.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
-class ProfileViewModel(
-    context: Context
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    @ApplicationContext context: Context
 ) : BaseViewModel(context) {
 
     private var _isEditMode = MutableLiveData<Boolean>()

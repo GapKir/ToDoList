@@ -5,8 +5,9 @@ import com.example.todolist.database.TaskEntity
 import com.example.todolist.database.TasksDao
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class DataBaseRepository(
+class DataBaseRepository @Inject constructor(
     private val tasksDao: TasksDao
 ) : Repository {
 

@@ -8,11 +8,15 @@ import com.example.todolist.base_abstracts.BaseViewModel
 import com.example.todolist.base_abstracts.TaskCategories
 import com.example.todolist.database.TaskEntity
 import com.example.todolist.models.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainScreenViewModel(
-    context: Context,
+@HiltViewModel
+class MainScreenViewModel @Inject constructor(
+    @ApplicationContext context: Context,
     private val repository: Repository
 ) : BaseViewModel(context) {
 

@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.viewModels
 import com.example.todolist.R
 import com.example.todolist.base_abstracts.BaseFragment
 import com.example.todolist.databinding.ProfilePageBinding
 import com.example.todolist.viewmodels.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class ProfileFragment: BaseFragment<ProfileViewModel>(ProfileViewModel::class.java) {
+@AndroidEntryPoint
+class ProfileFragment: BaseFragment() {
     private lateinit var binding: ProfilePageBinding
+    override val viewModel: ProfileViewModel by viewModels()
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()

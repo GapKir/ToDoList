@@ -13,8 +13,9 @@ import com.example.todolist.base_abstracts.DialogListener
 import com.example.todolist.base_abstracts.TaskCategories
 import com.example.todolist.fragments.ProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: TabPagerAdapter
