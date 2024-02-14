@@ -11,9 +11,13 @@ import androidx.core.app.NotificationCompat
 import com.example.todolist.App.Companion.NOTIFICATION_CHANNEL_ID
 import com.example.todolist.MainActivity
 import com.example.todolist.R
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NotificationHelper(
-    private val context: Context
+@Singleton
+class NotificationHelper @Inject constructor(
+    @ApplicationContext private val context: Context
 ) {
 
     fun getNotify(id: Int, title: String, message: String) {

@@ -14,11 +14,12 @@ import com.example.todolist.base_abstracts.TaskCategories
 import com.example.todolist.fragments.ProfileFragment
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: TabPagerAdapter
+    @Inject lateinit var adapter: TabPagerAdapter
     private val requestPermissions = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()) {}
 
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        adapter = TabPagerAdapter(this)
         binding.viewPager.adapter = adapter
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->

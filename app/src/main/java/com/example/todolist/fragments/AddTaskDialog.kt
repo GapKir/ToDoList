@@ -23,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddTaskDialog(
@@ -32,6 +33,7 @@ class AddTaskDialog(
     private lateinit var dialogBinding: DialogAddTaskBinding
     private var fileUri: Uri? = null
     private var pickedTime: Long? = null
+    @Inject lateinit var alarmScheduler: AlarmScheduler
 
     private val galleryLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -132,7 +134,7 @@ class AddTaskDialog(
 
     private fun createScheduleAlarm(title: String, desc: String) {
         pickedTime?.let {time->
-            AlarmScheduler(requireContext()).schedule(
+            alarmScheduler.schedule(
                 title, desc, time
             )
         }

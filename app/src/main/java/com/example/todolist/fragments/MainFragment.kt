@@ -13,12 +13,13 @@ import com.example.todolist.base_abstracts.TaskCategories
 import com.example.todolist.databinding.FragmentInProgressBinding
 import com.example.todolist.viewmodels.MainScreenViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment(),
     DialogListener {
     private lateinit var binding: FragmentInProgressBinding
-    private lateinit var adapter: TaskAdapter
+    @Inject lateinit var adapter: TaskAdapter
     override val viewModel: MainScreenViewModel by viewModels()
 
     override fun onCreateView(
@@ -63,7 +64,6 @@ class MainFragment : BaseFragment(),
     }
 
     private fun createAdapter() {
-        adapter = TaskAdapter(emptyList())
         val layoutManager = LinearLayoutManager(requireContext())
 
         binding.apply {

@@ -4,13 +4,10 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
-import com.example.todolist.database.TasksDatabase
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class App : Application() {
-    lateinit var taskDatabase: TasksDatabase
-
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()

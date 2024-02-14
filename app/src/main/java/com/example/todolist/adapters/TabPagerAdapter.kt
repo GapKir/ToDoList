@@ -6,8 +6,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.todolist.base_abstracts.BaseFragment
 import com.example.todolist.base_abstracts.TaskCategories
 import com.example.todolist.fragments.MainFragment
+import javax.inject.Inject
 
-class TabPagerAdapter(
+class TabPagerAdapter @Inject constructor(
     fragment: FragmentActivity
 ): FragmentStateAdapter(fragment) {
 

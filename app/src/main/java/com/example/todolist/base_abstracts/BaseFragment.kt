@@ -20,7 +20,6 @@ abstract class BaseFragment : Fragment(),
     override fun dialogListener(type: TaskCategories, title: String, desc: String?, uri: String?) {
     }
 
-
     companion object {
         const val KEY_ARG = "KEY_ARG"
         inline fun <reified S : BaseFragment> createInstance(param: TaskCategories? = null): S =

@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.database.TaskEntity
 import com.example.todolist.databinding.ItemTaskBinding
+import javax.inject.Inject
 
-class TaskAdapter(
-    private var tasks: List<TaskEntity>
-) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+class TaskAdapter @Inject constructor(): RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+    private var tasks: List<TaskEntity> = emptyList()
 
     fun updateData(newTasksList: List<TaskEntity>){
         val diffCallback = TaskDiffCallback(tasks, newTasksList)

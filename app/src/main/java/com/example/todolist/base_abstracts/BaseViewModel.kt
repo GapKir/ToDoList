@@ -4,11 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.IOException
 
 abstract class BaseViewModel(
-    protected val context: Context
+    protected  val context: Context
 ) : ViewModel() {
 
     protected val sharedPreferences: SharedPreferences =

@@ -4,9 +4,13 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AlarmScheduler(
-    private val context: Context
+@Singleton
+class AlarmScheduler @Inject constructor(
+    @ApplicationContext private val context: Context
 ) {
 
     private val alarmManager = context.getSystemService(AlarmManager::class.java)
